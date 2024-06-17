@@ -1,7 +1,7 @@
 package app;
 
 import static spark.Spark.*;
-import service.DespesaService;
+import service.MedicoService;
 import service.IaService;
 import service.ReceitaService;
 import service.UsuarioService;
@@ -17,7 +17,7 @@ import spark.Spark;
 public class Aplicacao {
 
     private static UsuarioService usuarioService = new UsuarioService();
-    private static DespesaService despesaService = new DespesaService();
+    private static MedicoService medicoService = new MedicoService();
     private static DespesaFixaService despesaFixService = new DespesaFixaService();
     private static ReceitaService receitaService = new ReceitaService();
     private static IaService iaService = new IaService();
@@ -56,13 +56,13 @@ public class Aplicacao {
         post("/usuario/authenticate", (request, response) -> usuarioService.authenticate(request, response));
 
         //DESPESA
-        post("/despesa/insert", (request, response) -> despesaService.insert(request, response));
+        post("/medico/insert", (request, response) -> medicoService.insert(request, response));
 
-        get("/despesa/get/:id", (request, response) -> despesaService.get(request, response));
+        get("/medico/get/:id", (request, response) -> medicoService.get(request, response));
 
-        put("/despesa/update/:id", (request, response) -> despesaService.update(request, response));
+        // put("/despesa/update/:id", (request, response) -> despesaService.update(request, response));
 
-        delete("/despesa/delete/:id", (request, response) -> despesaService.delete(request, response));
+        // delete("/despesa/delete/:id", (request, response) -> despesaService.delete(request, response));
 
         //DESPESA FIXA
         post("/despesa-fix/insert", (request, response) -> despesaFixService.insert(request, response));

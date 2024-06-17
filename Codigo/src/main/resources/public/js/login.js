@@ -8,7 +8,6 @@ document.getElementById("login-form").addEventListener("submit", function (event
         email: email,
         senha: senha
     };
-    console.log(JSON.stringify(usuarioLogin))
 
     axios.post("http://localhost:6789/usuario/authenticate", JSON.stringify(usuarioLogin), {
         headers: {
