@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 document.getElementById("login-form").addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -10,8 +8,9 @@ document.getElementById("login-form").addEventListener("submit", function (event
         email: email,
         senha: senha
     };
+    console.log(JSON.stringify(usuarioLogin))
 
-    axios.post("http://localhost:6789/usuario/authenticate", usuarioLogin, {
+    axios.post("http://localhost:6789/usuario/authenticate", JSON.stringify(usuarioLogin), {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -32,3 +31,5 @@ function exibirMensagemErro(mensagem) {
     msgError.innerHTML = mensagem;
     msgError.style.color = "red";
 }
+
+
