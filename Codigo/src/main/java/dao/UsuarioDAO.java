@@ -85,4 +85,21 @@ public class UsuarioDAO extends DAO {
 		return usuario;
 	}
 	
+	public boolean update(Usuario usuario) {
+		try {
+			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        	String sql = "UPDATE usuarios SET nome_completo = " + "'"
+			+ usuario.getNomeCompleto() + "'" + ", email = " + "'"
+			+ usuario.getEmail() + "'" + ", senha = " + "'" 
+			+ usuario.getSenha() + "'" + " WHERE id = " + "'"
+			+ usuario.getId() + "'";
+			st.executeUpdate(sql);
+			return true;
+		}catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		}
+	
+    }
+
 }
