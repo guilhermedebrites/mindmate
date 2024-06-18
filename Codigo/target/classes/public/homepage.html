@@ -25,7 +25,7 @@
         <img class="img-fluid" src="image/logodosite.png" alt="Logo do MindMate">
       </div>
       <div class="d-flex justify-content-end">
-        <a class="text-white m-3" href="cadastroclinicas.html"><button style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-clinic-medical fa-2x"></i></a>
+        <a class="text-white m-3"><button id="button_logout" type="button" style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-clinic-medical fa-2x"></i></button></a>
         <a class="text-white m-3" href="edicao_perfil.html"><i class="fa-solid fa-user fa-2x"></i></a>
         <a class="text-white m-3" href="canal_de_comunicacao.html"><i class="fa-solid fa-comment-dots fa-2x"></i></a>
       </div>
@@ -43,7 +43,7 @@
           <p class="card-text">Faça o teste que irá definir seu grau de Alzheimer <span class="text-warning">grátis!</span></p>
         </div>
         <div class="card-footer">
-          <a href="/Codigo/src/main/resources/public/quizAlzheimer.html" class="btn btn-warning text-light">Clique aqui e faça agora!</a>
+          <a href="quizAlzheimer.html" class="btn btn-warning text-light">Clique aqui e faça agora!</a>
         </div>
       </div>
     </div>
@@ -67,7 +67,25 @@
         </div>
       </div>
     </nav>
-  </footer>  
+  </footer>
+  
+  <script>
+    document.getElementById('button_logout').addEventListener('click', function() {
+      setTimeout(function() {
+        localStorage.clear();
+        window.location.href = "index.html";
+      }, 500); 
+    });
+
+    const isLogged = localStorage.getItem('isLoggedIn');
+    if (!isLogged) {
+      alert("Nenhuma conta está logada.");
+      setTimeout(function() {
+        window.location.href = "index.html";
+      }, 500);
+    }
+
+  </script>
 
 </body>
 </html>
