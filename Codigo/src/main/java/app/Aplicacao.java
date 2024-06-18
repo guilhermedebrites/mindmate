@@ -2,11 +2,8 @@ package app;
 
 import static spark.Spark.*;
 import service.MedicoService;
-import service.IaService;
-import service.ReceitaService;
+import service.QuestoesService;
 import service.UsuarioService;
-import service.DespesaFixaService;
-
 import java.util.HashMap;
 import spark.Filter;
 import spark.Request;
@@ -18,9 +15,7 @@ public class Aplicacao {
 
     private static UsuarioService usuarioService = new UsuarioService();
     private static MedicoService medicoService = new MedicoService();
-    private static DespesaFixaService despesaFixService = new DespesaFixaService();
-    private static ReceitaService receitaService = new ReceitaService();
-    private static IaService iaService = new IaService();
+    private static QuestoesService questoesService = new QuestoesService();
 
     public static void main(String[] args) {
         port(6789);
@@ -55,37 +50,15 @@ public class Aplicacao {
 
         post("/usuario/authenticate", (request, response) -> usuarioService.authenticate(request, response));
 
-        //DESPESA
+        //MEDICO
         post("/medico/insert", (request, response) -> medicoService.insert(request, response));
 
         get("/medico/get/:id", (request, response) -> medicoService.get(request, response));
 
-        // put("/despesa/update/:id", (request, response) -> despesaService.update(request, response));
+        //PERGUNTAS E RESPOSTAS
 
-        // delete("/despesa/delete/:id", (request, response) -> despesaService.delete(request, response));
+        get("/questoes/getAll", (request, response) -> questoesService.get(request, response));
 
-        //DESPESA FIXA
-        post("/despesa-fix/insert", (request, response) -> despesaFixService.insert(request, response));
-
-        get("/despesa-fix/get/:id", (request, response) -> despesaFixService.get(request, response));
-
-        put("/despesa-fix/update/:id", (request, response) -> despesaFixService.update(request, response));
-
-        delete("/despesa-fix/delete/:id", (request, response) -> despesaFixService.delete(request, response));
-
-        //RECEITA
-
-        post("/receita/insert", (request, response) -> receitaService.insert(request, response));
-
-        get("/receita/get/:id", (request, response) -> receitaService.get(request, response));
-
-        put("/receita/update/:id", (request, response) -> receitaService.update(request, response));
-
-        delete("/receita/delete/:id", (request, response) -> receitaService.delete(request, response));
-
-        //IA
-
-        post("/ia", (request, response) -> iaService.chatGpt(request, response));
 
     }
 }
