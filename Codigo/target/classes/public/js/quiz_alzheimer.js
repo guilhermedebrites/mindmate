@@ -79,3 +79,18 @@ function showResults() {
     document.getElementById('printtotalscore').textContent = totalScore;
     getInfoBasedOnScore();
 }
+
+document.getElementById('button_logout').addEventListener('click', function() {
+    setTimeout(function() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }, 500); 
+  });
+
+  const isLogged = localStorage.getItem('isLoggedIn');
+  if (!isLogged) {
+    alert("Nenhuma conta está logada.");
+    setTimeout(function() {
+      window.location.href = "index.html";
+    }, 500);
+  }
