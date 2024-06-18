@@ -44,6 +44,8 @@ public class Aplicacao {
         //USUARIOS
         post("/usuario/insert", (request, response) -> usuarioService.insert(request, response));
 
+        put("/usuario/put/:id", (request, response) -> usuarioService.update(request, response));
+
         get("/usuario/get", (request, response) -> usuarioService.get(request, response));
 
         get("/usuario/getAll", (request, response) -> usuarioService.getAll(request, response));

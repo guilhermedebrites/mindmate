@@ -1,143 +1,67 @@
-let btn = document.querySelector('#verSenha')
-let btnConfirm = document.querySelector('#verConfirmSenha')
+document.addEventListener("DOMContentLoaded", function () {
+  function togglePasswordVisibility(id, eyeIconId) {
+    const passwordField = document.getElementById(id);
+    const eyeIcon = document.getElementById(eyeIconId);
 
-
-let nome = document.querySelector('#nome')
-let labelNome = document.querySelector('#labelNome')
-let validNome = false
-
-let email = document.querySelector('#email')
-let labelemail = document.querySelector('#labelemail')
-let validemail = false
-
-
-
-let usuario = document.querySelector('#usuario')
-let labelUsuario = document.querySelector('#labelUsuario')
-let validUsuario = false
-
-let senha = document.querySelector('#senha')
-let labelSenha = document.querySelector('#labelSenha')
-let validSenha = false
-
-let confirmSenha = document.querySelector('#confirmSenha')
-let labelConfirmSenha = document.querySelector('#labelConfirmSenha')
-let validConfirmSenha = false
-
-let msgError = document.querySelector('#msgError')
-let msgSuccess = document.querySelector('#msgSuccess')
-
-nome.addEventListener('keyup', () => {
-  if(nome.value.length <= 2){
-    labelNome.setAttribute('style', 'color: red')
-    labelNome.innerHTML = 'Nome *Insira no minimo 3 caracteres'
-    nome.setAttribute('style', 'border-color: red')
-    validNome = false
-  } else {
-    labelNome.setAttribute('style', 'color: green')
-    labelNome.innerHTML = 'Nome'
-    nome.setAttribute('style', 'border-color: green')
-    validNome = true
+    eyeIcon.addEventListener("click", function () {
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
+      } else {
+        passwordField.type = "password";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
+      }
+    });
   }
-})
 
-usuario.addEventListener('keyup', () => {
-  if(usuario.value.length <= 4){
-    labelUsuario.setAttribute('style', 'color: red')
-    labelUsuario.innerHTML = 'Usuário *Insira no minimo 5 caracteres'
-    usuario.setAttribute('style', 'border-color: red')
-    validUsuario = false
-  } else {
-    labelUsuario.setAttribute('style', 'color: green')
-    labelUsuario.innerHTML = 'Usuário'
-    usuario.setAttribute('style', 'border-color: green')
-    validUsuario = true
-  }
-})
+  togglePasswordVisibility("senha", "verSenha");
+  togglePasswordVisibility("confirmSenha", "verConfirmSenha");
 
-senha.addEventListener('keyup', () => {
-  if(senha.value.length <= 5){
-    labelSenha.setAttribute('style', 'color: red')
-    labelSenha.innerHTML = 'Senha *Insira no minimo 6 caracteres'
-    senha.setAttribute('style', 'border-color: red')
-    validSenha = false
-  } else {
-    labelSenha.setAttribute('style', 'color: green')
-    labelSenha.innerHTML = 'Senha'
-    senha.setAttribute('style', 'border-color: green')
-    validSenha = true
-  }
-})
-
-confirmSenha.addEventListener('keyup', () => {
-  if(senha.value != confirmSenha.value){
-    labelConfirmSenha.setAttribute('style', 'color: red')
-    labelConfirmSenha.innerHTML = 'Confirmar Senha *As senhas não conferem'
-    confirmSenha.setAttribute('style', 'border-color: red')
-    validConfirmSenha = false
-  } else {
-    labelConfirmSenha.setAttribute('style', 'color: green')
-    labelConfirmSenha.innerHTML = 'Confirmar Senha'
-    confirmSenha.setAttribute('style', 'border-color: green')
-    validConfirmSenha = true
-  }
-})
-
-function cadastrar(){
-  if(validNome && validUsuario && validSenha && validConfirmSenha){
-    let listaUser = JSON.parse(localStorage.getItem('listaUser') || '[]')
-    
-    listaUser.push(
-    {
-      nomeCad: nome.value,
-      userCad: usuario.value,
-      senhaCad: senha.value
+  function cadastrar() {
+    const idUsuario = localStorage.getItem("idUsuario");
+    if (!idUsuario) {
+      document.getElementById("msgError").innerText = "ID de usuário não encontrado no localStorage.";
+      return;
     }
-    )
-    
-    localStorage.setItem('listaUser', JSON.stringify(listaUser))
-    
-   
-    msgSuccess.setAttribute('style', 'display: block')
-    msgSuccess.innerHTML = '<strong>Atualizando dados...</strong>'
-    msgError.setAttribute('style', 'display: none')
-    msgError.innerHTML = ''
-    
-     // Remova o redirecionamento para 'login.html' e exiba apenas a mensagem de sucesso
-     setTimeout(() => {
-      msgSuccess.innerHTML = 'Dados alterados com sucesso'
-    }, 3000)
-  
-    
-  } else {
-    msgError.setAttribute('style', 'display: block')
-    msgError.innerHTML = '<strong>Preencha todos os campos corretamente antes de cadastrar</strong>'
-    msgSuccess.innerHTML = ''
-    msgSuccess.setAttribute('style', 'display: none')
+    console.log(idUsuario);
+
+    const nome = document.getElementById("username").value;
+    const email = document.getElementById("emailUsuario").value;
+    const senha = document.getElementById("senhaNew").value;
+    const confirmSenha = document.getElementById("confirmSenhaNew").value;
+
+    console.log(nome, email, senha, confirmSenha);
+
+    if (senha !== confirmSenha) {
+      document.getElementById("msgError").innerText = "As senhas não coincidem.";
+      return;
+    }
+
+    const userData = {
+      nomeCompleto: nome,
+      email: email,
+      senha: senha
+    };
+
+    axios.put(`http://localhost:6789/usuario/put/${idUsuario}`, userData)
+      .then(response => {
+        alert("Dados atualizados com sucesso.");
+        window.location.href = "index.html";
+        document.getElementById("msgError").innerText = "";
+      })
+      .catch(error => {
+        alert("Erro ao atualizar dados.");
+        console.error("Erro ao atualizar dados: ", error);
+      });
   }
-}
 
-btn.addEventListener('click', ()=>{
-  let inputSenha = document.querySelector('#senha')
-  
-  if(inputSenha.getAttribute('type') == 'password'){
-    inputSenha.setAttribute('type', 'text')
-  } else {
-    inputSenha.setAttribute('type', 'password')
+  const atualizarBtn = document.getElementById("atualizarBtn");
+  if (atualizarBtn) {
+    atualizarBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+      cadastrar();
+    });
   }
-})
-
-btnConfirm.addEventListener('click', ()=>{
-  let inputConfirmSenha = document.querySelector('#confirmSenha')
-  
-  if(inputConfirmSenha.getAttribute('type') == 'password'){
-    inputConfirmSenha.setAttribute('type', 'text')
-  } else {
-    inputConfirmSenha.setAttribute('type', 'password')
-  }
-})
-  
-
-
-
-
+});

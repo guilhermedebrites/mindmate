@@ -94,4 +94,35 @@ public class UsuarioService {
 		return senhaLogin.equals(senhaBanco);
 
 	}
+
+	public String update(Request request, Response response) {
+		String idParam = request.params(":id");
+		int id = Integer.parseInt(idParam);
+
+		String json = request.body();
+		Gson gson = new Gson();
+		Usuario usuarioAtualizado = gson.fromJson(json, Usuario.class);
+
+		Usuario usuarioExistente = UsuarioDAO.get(id);
+		if (usuarioExistente == null) {
+			response.status(404); // 404 Not found
+			return "{\"message\": \"Usuário não encontrado\"}";
+		}
+
+		usuarioExistente.setNomeCompleto(usuarioAtualizado.getNomeCompleto());
+		usuarioExistente.setEmail(usuarioAtualizado.getEmail());
+
+		if (usuarioAtualizado.getSenha() != null && !usuarioAtualizado.getSenha().isEmpty()) {
+			usuarioExistente.setSenha(usuarioAtualizado.CriptografarSenha(usuarioAtualizado.getSenha()).toString());
+		}
+
+		if (UsuarioDAO.update(usuarioExistente)) {
+			response.status(200); // 200 OK
+			return "{\"message\": \"Usuário atualizado com sucesso\"}";
+		} else {
+			response.status(500); // 500 Internal Server Error
+			return "{\"message\": \"Erro ao atualizar o usuário\"}";
+		}
+	}
+
 }

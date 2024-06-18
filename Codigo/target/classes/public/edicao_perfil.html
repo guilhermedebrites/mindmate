@@ -16,16 +16,16 @@
 <nav class="navbar">
     <div class="container-fluid">
       <div>
-      <a class="text-white" href="/Codigo/src/main/resources/public/homepage.html"><button style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-house-chimney fa-2x"></i></a>
+      <a class="text-white" href="homepage.html"><button style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-house-chimney fa-2x"></i></a>
       </button>
     </div>
       <div class="row mx-auto d-flex justify-content-center">
-        <img class="img-fluid" src="/Codigo/src/main/resources/public/image/copia titulo.png" alt="Logo do MindMate">
+        <img class="img-fluid" src="./image/copia titulo.png" alt="Logo do MindMate">
       </div>
       <div class="d-flex justify-content-end">
-        <a class="text-white m-3" href="/codigo/MindMatev1.0/CadastrodeClinicas/cadastroclinicas.html"><button style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-clinic-medical fa-2x"></i></a>
-        <a class="text-white m-3" href="/Codigo/src/main/resources/public/edicao_perfil.html"><i class="fa-solid fa-user fa-2x"></i></a>
-        <a class="text-white m-3" href="/codigo/MindMatev1.0/Canal Comunicacao/Canal de comunicacao/index.html"><i class="fa-solid fa-comment-dots fa-2x"></i></a>
+        <a class="text-white m-3" href="cadastroclinicas.html"><button style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-clinic-medical fa-2x"></i></a>
+        <a class="text-white m-3" href="edicao_perfil.html"><i class="fa-solid fa-user fa-2x"></i></a>
+        <a class="text-white m-3" href="index.html"><i class="fa-solid fa-comment-dots fa-2x"></i></a>
       </div>
     </div>
   </nav>
@@ -41,42 +41,36 @@
         <div id="msgSuccess"></div>
 
         <div class="label-float">
-          <input type="text" id="nome" placeholder=" " required />
-          <label id="labelNome" for="nome">Nome</label>
+          <input type="text" id="username" placeholder=" " required />
+          <label id="labelNome" for="username">Nome</label>
         </div>
         
         <div class="label-float">
-          <input type="text" id="email" placeholder=" " required />
-          <label id="labelemail" for="email">E-mail</label>
+          <input type="text" id="emailUsuario" placeholder=" " required />
+          <label id="labelemail" for="emailUsuario">E-mail</label>
         </div>
 
         <div class="label-float">
-          <input type="text" id="usuario" placeholder=" " required />
-          <label id="labelUsuario" for="usuario">Novo usuário</label>
-        </div>
-
-        <div class="label-float">
-          <input type="password" id="senha" placeholder=" " required />
-          <label id="labelSenha" for="senha">Nova senha</label>
+          <input type="password" id="senhaNew" placeholder=" " required />
+          <label id="labelSenha" for="senhaNew">Nova senha</label>
           <i id="verSenha" class="fa fa-eye" aria-hidden="true"></i>
         </div>
 
         <div class="label-float">
-          <input type="password" id="confirmSenha" placeholder=" " required />
-          <label id="labelConfirmSenha" for="confirmSenha"
+          <input type="password" id="confirmSenhaNew" placeholder=" " required />
+          <label id="labelConfirmSenha" for="confirmSenhaNew"
             >Confirmar Senha</label
           >
           <i id="verConfirmSenha" class="fa fa-eye" aria-hidden="true"></i>
         </div>
 
         <div class="justify-center">
-          <button onclick="cadastrar()">Atualizar</button>
+          <button id="atualizarBtn">Atualizar</button>
         </div>
       </div>
     </div>
 
-    <script src="/Codigo/src/main/resources/public/js/edicao_perfil.js"></script>
-
-
+    <script src="./js/edicao_perfil.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </body>
 </html>
