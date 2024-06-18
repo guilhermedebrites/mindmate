@@ -1,124 +1,94 @@
-// Seleciona o botão "Adicionar contato" e o formulário
-const botaoAdicionarContato = document.getElementById("adicionar-contato");
-const formContato = document.getElementById("form-contato");
-
-// Seleciona a div onde os contatos serão adicionados
-const divContatos = document.getElementById("contatos");
-
-// Adiciona um listener ao botão "Adicionar contato"
-botaoAdicionarContato.addEventListener("click", function(event) {
-  event.preventDefault(); // Previne o comportamento padrão do botão
-
-  // Obtém os valores inseridos no formulário
-  const nome = formContato.nome.value;
-  const telefone = formContato.telefone.value;
-  const email = formContato.email.value;
-
-  // Verifica se os campos estão vazios
-  if (nome === '' || telefone === '' || email === '') {
-    return; // Se algum campo estiver vazio, interrompe a execução
-  }
-
-  // Cria os elementos HTML para o novo contato
-  const container = document.createElement("div");
-  container.classList.add("container");
-
-  const img = document.createElement("img");
-  img.src = "icone usuario.png";
-  img.alt = nome;
-
-  const h2 = document.createElement("h2");
-  h2.textContent = nome;
-
-  const pEmail = document.createElement("p");
-  pEmail.textContent = "email: " + email;
-
-  const pTelefone = document.createElement("p");
-  pTelefone.textContent = "telefone: " + telefone;
-
-  const linkWhatsapp = document.createElement("a");
-  linkWhatsapp.classList.add("whatsapp-link");
-  linkWhatsapp.href = "https://web.whatsapp.com/send?phone=" + telefone;
-  linkWhatsapp.target = "_blank";
-
-  const iconeWhatsapp = document.createElement("i");
-  iconeWhatsapp.classList.add("fa", "fa-whatsapp");
-
-  // Adiciona os elementos ao DOM
-  linkWhatsapp.appendChild(iconeWhatsapp);
-  container.appendChild(img);
-  container.appendChild(h2);
-  container.appendChild(pEmail);
-  container.appendChild(pTelefone);
-  container.appendChild(linkWhatsapp);
-  divContatos.appendChild(container);
-
-  // Limpa o formulário
-  formContato.reset();
-
-  // Armazena os dados no Local Storage
-  const contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-  contatos.push({
-    nome: nome,
-    telefone: telefone,
-    email: email
+const idUsuario_local = localStorage.getItem('idUsuario');
+let med;
+if(idUsuario_local) {
+  axios.get(`http://localhost:6789/medico/get/${idUsuario_local}`)
+  .then((response) => {
+    const medicos = response.data;
+    const medicoContainers = document.getElementById('contatos');
+    medicos.forEach(medico => {
+      const container = createMedicoContainer(medico);
+      medicoContainers.appendChild(container);
+    });
+  })
+  .catch((error) => {
+      console.error("Erro ao buscar dados do médico:", error);
+      exibirMensagemErro("Erro ao buscar dados do médico");
   });
-  localStorage.setItem("contatos", JSON.stringify(contatos));
-});
-
-// Carrega os contatos do localStorage e adiciona-os ao DOM
-const contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-contatos.forEach(function(contato) {
-  // Verifica se os campos do contato estão vazios
-  if (contato.nome === '' || contato.telefone === '' || contato.email === '') {
-    return; // Se algum campo estiver vazio, interrompe a execução
-  }
-
-  const container = document.createElement("div");
-  container.classList.add("container");
-
-  const img = document.createElement("img");
-  img.src = "icone usuario.png";
-  img.alt = contato.nome;
-
-  const h2 = document.createElement("h2");
-  h2.textContent = contato.nome;
-
-  const pEmail = document.createElement("p");
-  pEmail.textContent = "email: " + contato.email;
-
-  const pTelefone = document.createElement("p");
-  pTelefone.textContent = "telefone: " + contato.telefone;
-
-  const linkWhatsapp = document.createElement("a");
-  linkWhatsapp.classList.add("whatsapp-link");
-  linkWhatsapp.href = "https://web.whatsapp.com/send?phone=" + contato.telefone;
-  linkWhatsapp.target = "_blank";
-
-  const iconeWhatsapp = document.createElement("i");
-  iconeWhatsapp.classList.add("fa", "fa-whatsapp");
-
-  // Adiciona os elementos ao DOM
-  linkWhatsapp.appendChild(iconeWhatsapp);
-  container.appendChild(img);
-  container.appendChild(h2);
-  container.appendChild(pEmail);
-  container.appendChild(pTelefone);
-  container.appendChild(linkWhatsapp);
-  divContatos.appendChild(container);
-});
-
-
-function removerContato(nome) {
-  const contatos = JSON.parse(localStorage.getItem("contatos")) || [];
-  
-  // Filtra os contatos mantendo apenas aqueles que não correspondem ao nome fornecido
-  const contatosFiltrados = contatos.filter(function(contato) {
-    return contato.nome !== nome;
-  });
-  
-  // Atualiza o Local Storage com a lista filtrada de contatos
-  localStorage.setItem("contatos", JSON.stringify(contatosFiltrados));
 }
 
-removerContato("ddd");
+function createMedicoContainer(medico) {
+  const container = document.createElement('div');
+  container.classList.add('container');
+
+  const img = document.createElement('img');
+  img.src = 'image/Captura de tela 2023-06-29 124924.png';
+  img.alt = 'medico';
+  container.appendChild(img);
+
+  const nome = document.createElement('h2');
+  nome.id = 'nome';
+  nome.textContent = medico.descMedico;
+  container.appendChild(nome);
+
+  const email = document.createElement('p');
+  email.id = 'email';
+  email.textContent = `email: ${medico.emailMedico}`;
+  container.appendChild(email);
+
+  const telefone = document.createElement('p');
+  telefone.id = 'telefone';
+  telefone.textContent = `telefone: ${medico.foneMedico}`;
+  container.appendChild(telefone);
+
+  const whatsappLink = document.createElement('a');
+  whatsappLink.classList.add('whatsapp-link');
+  whatsappLink.href = `https://web.whatsapp.com/send?phone=55${medico.foneMedico}`;
+  whatsappLink.target = '_blank';
+  whatsappLink.innerHTML = '<i class="fa fa-whatsapp"></i>';
+  
+  const whatsappParagraph = document.createElement('p');
+  whatsappParagraph.appendChild(whatsappLink);
+  container.appendChild(whatsappParagraph);
+
+  return container;
+}
+
+
+
+
+
+document.getElementById('adicionar-contato').addEventListener('click', function() {
+  var nome = document.getElementById('nome_id').value;
+  var telefone = document.getElementById('telefone_id').value;
+  var email = document.getElementById('email_id').value;
+  var foto = document.getElementById('foto').value;
+
+  if (!nome || !telefone || !email || !foto) {
+      alert("Preencha todos os campos");
+      return;
+  }
+
+  const contato = {
+      descMedico: nome,
+      foneMedico: telefone,
+      emailMedico: email,
+      idadeMedico: 100, // Valor fixo
+      cidadeMedico: "Não informado", // Valor fixo
+      enderecoMedico: "Não informado", // Valor fixo
+      webMedico: foto,
+      idUsuario: idUsuario_local
+  };
+
+  axios.post("http://localhost:6789/medico/insert", JSON.stringify(contato), {
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  })
+  .then((response) => {
+    alert("Médico inserido com sucesso");
+    window.location.reload();
+  })
+  .catch((error) => {
+    exibirMensagemErro("Erro ao inserir Médico");
+  });
+  });

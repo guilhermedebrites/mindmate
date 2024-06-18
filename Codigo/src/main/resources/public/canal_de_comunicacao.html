@@ -19,16 +19,16 @@
     <nav class="navbar">
     <div class="container-fluid">
       <div>
-      <a class="text-white" href="/Codigo/src/main/resources/public/homepage.html"><button style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-house-chimney fa-2x"></i></a>
+      <a class="text-white" href="homepage.html"><button style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-house-chimney fa-2x"></i></a>
       </button>
     </div>
       <div class="row mx-auto d-flex justify-content-center">
         <img class="img-fluid" src="image/logodosite.png" alt="Logo do MindMate">
       </div>
       <div class="d-flex justify-content-end">
-        <a class="text-white m-3" href="/codigo/MindMatev1.0/CadastrodeClinicas/cadastroclinicas.html"><button style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-clinic-medical fa-2x"></i></a>
-        <a class="text-white m-3" href="/Codigo/src/main/resources/public/edicao_perfil.html"><i class="fa-solid fa-user fa-2x"></i></a>
-        <a class="text-white m-3" href="/codigo/MindMatev1.0/Canal Comunicacao/Canal de comunicacao/index.html"><i class="fa-solid fa-comment-dots fa-2x"></i></a>
+        <a class="text-white m-3" href="cadastroclinicas.html"><button style="background-color: #00DDFF; color: white; border: none;"><i class="fa-solid fa-clinic-medical fa-2x"></i></a>
+        <a class="text-white m-3" href="edicao_perfil.html"><i class="fa-solid fa-user fa-2x"></i></a>
+        <a class="text-white m-3" href="canal_de_comunicacao.html"><i class="fa-solid fa-comment-dots fa-2x"></i></a>
       </div>
     </div>
   </nav>
@@ -38,53 +38,22 @@
 
 <div id="contatos">
 
-    <div class="container">
-        <img src="image/Captura de tela 2023-06-29 124924.png" alt="alex">
-        <h2 id="nome">Dr. Antônio</h2>
-        <p id="email"> email: antonio@gmail.com</p>
-        <p id="telefone">telefone: (31)986675434</p>
-        <p><a class="whatsapp-link"    href="https://web.whatsapp.com/send?phone=553198667534" target="_blank"> 
-            <i class="fa fa-whatsapp"></i>
-        </a></p>
-
-      </div>
-    <div class="container">
-        <img src="image/Captura de tela 2023-06-29 125242.png" alt="Dr.Otávio">
-        <h2 id="nome">Dr. Otávio</h2>
-        <p id="email">email: otaviocarvalhe@gmail.com</p>
-        <p id="telefone">telefone: (31)989977656</p>
-        <p><a class="whatsapp-link"    href="https://web.whatsapp.com/send?phone=5531989977656" target="_blank"> 
-            <i class="fa fa-whatsapp"></i>
-        </a></p>
-
-      </div>
-    <div class="container">
-        <img src="image/Captura de tela 2023-06-29 125258.png" alt="alex" id="foto">
-        <h2 id="nome">Dra. Júlia</h2>
-        <p id="email">email: jujueba@gmail.com</p>
-        <p id="telefone">telefone: (31)997816874</p>
-        <p><a class="whatsapp-link"    href="https://web.whatsapp.com/send?phone=5531997816874" target="_blank"> 
-            <i class="fa fa-whatsapp"></i>
-        </a></p>
-
-      </div>
-
 </div> 
 
 
 <div class="container2">
 <form id="form-contato">
     <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome">
+    <input type="text" id="nome_id" name="nome">
 
     <label for="telefone">Telefone:</label>
-    <input type="text" id="telefone" name="telefone">
+    <input type="text" id="telefone_id" name="telefone">
 
     <label for="email">Email:</label>
-    <input type="text" id="email" name="email">
+    <input type="text" id="email_id">
 
-    <label for="foto">Foto:</label>
-    <input class="button" type="file" id="foto">
+    <label for="foto">Link foto:</label>
+    <input type="text" id="foto">
    
 
 
@@ -92,6 +61,7 @@
 </form>
 
 </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="./js/canal_de_comunicacao.js"></script>
 </body>
 </html>
