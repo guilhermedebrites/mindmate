@@ -1,109 +1,81 @@
-var answers = {};
+let questionsData;
+let totalScore = 0;
+let currentQuestionIndex = 0;
 
-var question_one = document.getElementById('question-1');
-var question_two = document.getElementById('question-2');
-var question_three = document.getElementById('question-3');
-var question_four = document.getElementById('question-4');
-var question_five = document.getElementById('question-5');
+function getInfoBasedOnScore() {
+  let score_info;
+  if (totalScore < 2) {
+    score_info = "Parece que você <strong>NÃO</strong> possuí Alzheimer, procure um médico para mais informações";
+  } else if (totalScore < 5) {
+    score_info = "Parece que você tem um grau <strong>LEVE</strong> de Alzheimer, procure um médico para mais informações";
+  } else if (totalScore === 5) {
+    score_info = "Parece que você tem um grau entre <strong>LEVE e MODERADO</strong> de Alzheimer, procure um médico para mais informações";
+  } else if (totalScore < 10) {
+    score_info = "Parece que você tem um grau <strong>MODERADO</strong> de Alzheimer, procure um médico para mais informações";
+  } else if (totalScore === 11) {
+    score_info = "Parece que você tem um grau entre <strong>MODERADO e GRAVE</strong> de Alzheimer, procure um médico para mais informações";
+  } else if (totalScore < 16) {
+    score_info = "Parece que você tem um grau <strong>GRAVE</strong> de Alzheimer, procure um médico para mais informações";
+  }
+  document.getElementById('printscoreinfo').innerHTML = score_info;
+}
 
-function storeAnswer(question_number, event){
-    if(event.target.type === 'radio'){
-        console.log(event.target.value);
-        answers['question'+question_number] = parseInt(event.target.value);
-        console.log(answers);
+function growProgressBar(percentage_width) {
+  var bar = document.getElementById("progress_bar");
+  bar.style.width = percentage_width + "%";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    growProgressBar(0);
+    axios.get(`http://localhost:6789/questoes/getAll`)
+        .then((response) => {
+        questionsData = response.data;
+        renderQuestion(currentQuestionIndex);
+        console.log(questionsData);
+        })
+        .catch((error) => {
+        console.error("Erro ao buscar perguntas:", error);
+        alert("Erro ao buscar perguntas");
+        });
+
+});
+
+function nextQuestion() {
+  const selectedAnswer = document.querySelector(`input[name="question-${questionsData[currentQuestionIndex].id_pergunta}"]:checked`);
+  if (selectedAnswer) {
+    totalScore += parseFloat(selectedAnswer.value);
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questionsData.length) {
+      renderQuestion(currentQuestionIndex);
+      growProgressBar((currentQuestionIndex / questionsData.length) * 100);
+    } else {
+      growProgressBar((currentQuestionIndex / questionsData.length) * 100);
+      showResults();
     }
+  } else {
+    alert("Por favor, selecione uma resposta antes de continuar.");
+  }
 }
 
-question_one.addEventListener('click', function(event){
-    storeAnswer(1, event)
-})
-question_two.addEventListener('click', function(event){
-    storeAnswer(2, event)
-})
-question_three.addEventListener('click', function(event){
-    storeAnswer(3, event)
-})
-question_four.addEventListener('click', function(event){
-    storeAnswer(4, event)
-})
-question_five.addEventListener('click', function(event){
-    storeAnswer(5, event)
-})
+function renderQuestion(index) {
+  let questionHtml = `
+    <div id="question-${questionsData[index].id_pergunta}">
+      <h2>Pergunta ${index + 1}</h2>
+      <h3><strong>${questionsData[index].desc_pergunta}</strong></h3>
+      <hr>`;
+  questionsData[index].respostas.forEach(resposta => {
+    questionHtml += `
+      <input id="question-${questionsData[index].id_pergunta}-answer-${resposta.idResposta}" type="radio" name="question-${questionsData[index].id_pergunta}" value="${resposta.valor}"> ${resposta.descResposta}<br>`;
+  });
+  questionHtml += `<hr><div class="clearfix"></div></div>`;
 
-function totalScore(){
-    var total_score = 
-    answers.question1+
-    answers.question2+
-    answers.question3+
-    answers.question4+ 
-    answers.question5;
-    
-    return total_score;
+  console.log(questionHtml);
+  document.getElementById('questions').innerHTML = questionHtml;
 }
 
-function getInfoBasedOnScore(){
-    if(totalScore() < 2){
-        var score_info = "Parece que você <strong>NÃO</strong> possuí Alzheimer, procure um médico para mais informações";
-    } else if(totalScore() < 5){
-        var score_info = "Parece que você tem um grau <strong>LEVE</strong> de Alzheimer, procure um médico para mais informações"
-    }else if(totalScore() === 5){
-        var score_info = "Parece que você tem um grau entre <strong>LEVE e MODERADO</strong> de Alzheimer, procure um médico para mais informações"
-    }else if(totalScore() < 10){
-        var score_info = "Parece que você tem um grau <strong>MODERADO</strong> de Alzheimer, procure um médico para mais informações"
-    }else if(totalScore() === 11){
-        var score_info = "Parece que você tem um grau entre <strong>MODERADO e GRAVE</strong> de Alzheimer, procure um médico para mais informações"
-    }else if(totalScore() < 16){
-        var score_info = "Parece que você tem um grau <strong>GRAVE</strong> de Alzheimer, procure um médico para mais informações"
-    }
-    return score_info;
+function showResults() {
+    document.querySelector('.questions_box').style.display = 'none';
+    document.getElementById('question-6').style.display = 'block';
+    document.getElementById('printtotalscore').textContent = totalScore;
+    getInfoBasedOnScore();
 }
-
-var submit1 = document.getElementById('submit1');
-var submit2 = document.getElementById('submit2');
-var submit3 = document.getElementById('submit3');
-var submit4 = document.getElementById('submit4');
-var submit5 = document.getElementById('submit5');
-
-function nextQuestion(question_number){
-    var current_question_number = question_number - 1;
-    var question_number = question_number.toString();
-    var current_question_number = current_question_number.toString();
-
-    var el = document.getElementById('question-'+question_number);
-    var el2 = document.getElementById('question-'+current_question_number);
-
-    el.style.display = "block";
-    el2.style.display = "none";
-}
-
-submit1.addEventListener('click', function(){
-    nextQuestion(2);
-    growProgressBar('40%');
-})
-submit2.addEventListener('click', function(){
-    nextQuestion(3);
-    growProgressBar('60%');
-})
-submit3.addEventListener('click', function(){
-    nextQuestion(4);
-    growProgressBar('80%');
-})
-submit4.addEventListener('click', function(){
-    nextQuestion(5);
-    growProgressBar('100%');
-})
-submit5.addEventListener('click', function(){
-    nextQuestion(6);
-})
-
-submit5.addEventListener('click', function(){
-    document.getElementById("printtotalscore").innerHTML = totalScore();
-    document.getElementById("printscoreinfo").innerHTML = getInfoBasedOnScore();
-})
-
-function growProgressBar(percentage_width){
-    var bar = document.getElementById("progress_bar");
-    bar.style.width = percentage_width;
-}
-
-
